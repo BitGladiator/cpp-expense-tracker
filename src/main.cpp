@@ -1,14 +1,16 @@
-#include "../include/Expense.h"
-#include<iostream>
+#include "../include/ExpenseManager.h"
+#include "../include/FileHandler.h"
+#include "../include/Menu.h"
+
 int main() {
-    Expense e(200.5, "Groceries", "2025-07-09", "Weekly shopping");
-    e.display();
+    ExpenseManager manager;
 
-    std::string csv = e.toCSV();
-    std::cout << "CSV: " << csv << std::endl;
+    // Load from file at startup
+    manager.getExpenses() = FileHandler::loadFromFile("data/expenses.csv");
 
-    Expense f = Expense::fromCSV(csv);
-    f.display();
+    // Run the menu
+    Menu menu(manager);
+    menu.show();
 
     return 0;
 }
