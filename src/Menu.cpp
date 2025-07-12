@@ -16,6 +16,8 @@ void Menu::show()
         std::cout << "2. Show All Expenses\n";
         std::cout << "3. Save and Exit\n";
         std::cout << "4. Show Total Amount Spent\n";
+        std::cout << "5. Filter Expenses by Category\n";
+        std::cout << "6. Show Monthly Summary\n";
         std::cout << "Enter choice: ";
         std::cin >> choice;
 
@@ -45,6 +47,24 @@ void Menu::show()
         case 4:
             std::cout << "Total spent: $" << manager.getTotalSpent() << "\n";
             break;
+        case 5:
+        {
+            std::string category;
+            std::cin.ignore();
+            std::cout << "Enter category: ";
+            std::getline(std::cin, category);
+            manager.showExpensesByCategory(category);
+            break;
+        }
+        case 6:
+        {
+            std::string monthYear;
+            std::cin.ignore();
+            std::cout << "Enter month and year (YYYY-MM): ";
+            std::getline(std::cin, monthYear);
+            manager.showMonthlySummary(monthYear);
+            break;
+        }
         default:
             std::cout << "Invalid choice. Try again.\n";
         }

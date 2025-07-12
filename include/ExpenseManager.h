@@ -16,6 +16,8 @@ public:
     // Display all saved expenses
     void showAllExpenses() const;
     double getTotalSpent() const;
+    void showExpensesByCategory(const std::string& category) const;
+    void showMonthlySummary(const std::string& monthYear) const;
     // Provide access to all expenses (useful for saving)
     std::vector<Expense> &getExpenses();
 };
