@@ -14,14 +14,11 @@ void Menu::show()
         std::cout << "\n===== Expense Tracker Menu =====\n";
         std::cout << "1. Add Expense\n";
         std::cout << "2. Show All Expenses\n";
-        std::cout << "3. Save and Exit\n";
-        std::cout << "4. Show Total Amount Spent\n";
-        std::cout << "5. Filter Expenses by Category\n";
-        std::cout << "6. Show Monthly Summary\n";
+        std::cout << "3. Reports and Analytics\n";
+        std::cout << "4. Save and Exit\n";
         std::cout << "Enter choice: ";
         std::cin >> choice;
 
-        // Fix input stream if user enters wrong type
         if (std::cin.fail())
         {
             std::cin.clear();
@@ -41,13 +38,47 @@ void Menu::show()
             manager.showAllExpenses();
             break;
         case 3:
+            showReportsMenu();  // ✅ this is your submenu
+            break;
+        case 4:
             FileHandler::saveToFile("data/expenses.csv", manager.getExpenses());
             std::cout << "Saved and exiting. Goodbye!\n";
             break;
-        case 4:
+        default:
+            std::cout << "Invalid choice. Try again.\n";
+        }
+
+    } while (choice != 4);
+}
+
+void Menu::showReportsMenu()
+{
+    int reportChoice;
+
+    do
+    {
+        std::cout << "\n=== Reports and Analytics ===\n";
+        std::cout << "1. Show Total Spent\n";
+        std::cout << "2. Filter by Category\n";
+        std::cout << "3. Show Monthly Summary\n";
+        std::cout << "4. Export Monthly Report\n";
+        std::cout << "5. Back to Main Menu\n";
+        std::cout << "Enter choice: ";
+        std::cin >> reportChoice;
+
+        if (std::cin.fail())
+        {
+            std::cin.clear();
+            std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+            reportChoice = -1;
+        }
+
+        switch (reportChoice)
+        {
+        case 1:
             std::cout << "Total spent: $" << manager.getTotalSpent() << "\n";
             break;
-        case 5:
+        case 2:
         {
             std::string category;
             std::cin.ignore();
@@ -56,7 +87,7 @@ void Menu::show()
             manager.showExpensesByCategory(category);
             break;
         }
-        case 6:
+        case 3:
         {
             std::string monthYear;
             std::cin.ignore();
@@ -65,12 +96,25 @@ void Menu::show()
             manager.showMonthlySummary(monthYear);
             break;
         }
+        case 4:
+        {
+            std::string monthYear;
+            std::cin.ignore();
+            std::cout << "Enter month and year (YYYY-MM): ";
+            std::getline(std::cin, monthYear);
+            manager.exportMonthlyReport(monthYear);
+            break;
+        }
+        case 5:
+            std::cout << "Returning to main menu...\n";
+            break;
         default:
             std::cout << "Invalid choice. Try again.\n";
         }
 
-    } while (choice != 3);
+    } while (reportChoice != 5);
 }
+
 
 Expense Menu::getExpenseFromUser() const
 {

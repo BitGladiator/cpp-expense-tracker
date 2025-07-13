@@ -1,6 +1,7 @@
 #include "../include/ExpenseManager.h"
 #include <iostream>
-
+#include <fstream>
+#include <filesystem> // C++17
 void ExpenseManager::addExpense(const Expense &e)
 {
     expenses.push_back(e);
@@ -71,4 +72,40 @@ void ExpenseManager::showMonthlySummary(const std::string& monthYear) const {
     } else {
         std::cout << "No expenses found for " << monthYear << "\n";
     }
+}
+void ExpenseManager::exportMonthlyReport(const std::string& monthYear) const {
+    std::string filename = "reports/report-" + monthYear + ".txt";
+
+    std::ofstream outFile(filename);
+    if (!outFile) {
+        std::cerr << "Failed to create report file.\n";
+        return;
+    }
+
+    double total = 0.0;
+    bool found = false;
+
+    outFile << "Monthly Expense Report for " << monthYear << "\n\n";
+
+    for (const auto& expense : expenses) {
+        if (expense.getDate().substr(0, 7) == monthYear) {
+            outFile << "Date: " << expense.getDate()
+                    << " | Amount: $" << expense.getAmount()
+                    << " | Category: " << expense.getCategory()
+                    << " | Note: " << expense.getNote() << "\n";
+
+            total += expense.getAmount();
+            found = true;
+        }
+    }
+
+    if (found) {
+        outFile << "\nTotal Spent: $" << total << "\n";
+        std::cout << "Report exported to " << filename << "\n";
+    } else {
+        std::cout << "No expenses found for " << monthYear << ". Empty report created.\n";
+        outFile << "No expenses found.\n";
+    }
+
+    outFile.close();
 }

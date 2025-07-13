@@ -9,6 +9,7 @@ private:
     ExpenseManager& manager;
 
     Expense getExpenseFromUser() const;
+    void showReportsMenu();
 
 public:
     Menu(ExpenseManager& mgr);
