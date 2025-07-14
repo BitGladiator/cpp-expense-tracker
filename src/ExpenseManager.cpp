@@ -109,3 +109,6 @@ void ExpenseManager::exportMonthlyReport(const std::string& monthYear) const {
 
     outFile.close();
 }
+void ExpenseManager::setExpenses(const std::vector<Expense>& newExpenses) {
+    expenses = newExpenses;
+}
