@@ -5,7 +5,8 @@
 
 class PasswordManager {
 public:
-    static bool verifyPassword(const std::string& filepath);
+    static bool verifyPassword(const std::string& filePath);
+    static void setPassword(const std::string& filePath);
 };
 
-#endif
+#endif 

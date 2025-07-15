@@ -6,6 +6,7 @@
 
 int main() {
     // 🔐 Password check before anything else
+    PasswordManager::setPassword("data/password.txt");
     if (!PasswordManager::verifyPassword("data/password.txt")) {
         std::cout << "Access denied. Exiting.\n";
         return 1;
