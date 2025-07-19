@@ -3,6 +3,8 @@
 #include <fstream>
 #include <iostream>
 #include <string>
+#include <termios.h>
+#include <unistd.h>
 
 bool PasswordManager::verifyPassword(const std::string& filePath) {
     std::ifstream file(filePath);
@@ -17,7 +19,7 @@ bool PasswordManager::verifyPassword(const std::string& filePath) {
 
     std::string inputPassword;
     std::cout << "Enter password: ";
-    std::getline(std::cin, inputPassword);
+    inputPassword = getMaskedPassword();
 
     std::string hashedInput = picosha2::hash256_hex_string(inputPassword);
 
@@ -27,7 +29,7 @@ bool PasswordManager::verifyPassword(const std::string& filePath) {
 void PasswordManager::setPassword(const std::string& filePath) {
     std::string newPassword;
     std::cout << "Set a new password: ";
-    std::getline(std::cin, newPassword);
+    newPassword = getMaskedPassword();
 
     std::string hashed = picosha2::hash256_hex_string(newPassword);
 
@@ -39,4 +41,21 @@ void PasswordManager::setPassword(const std::string& filePath) {
     } else {
         std::cerr << "Failed to write password file.\n";
     }
+}
+std::string PasswordManager::getMaskedPassword() {
+    std::string password;
+    struct termios oldt, newt;
+
+    // Turn off terminal echo
+    tcgetattr(STDIN_FILENO, &oldt);          // Get current terminal settings
+    newt = oldt;
+    newt.c_lflag &= ~ECHO;                   // Disable ECHO
+    tcsetattr(STDIN_FILENO, TCSANOW, &newt); // Apply settings
+
+    std::getline(std::cin, password);        // Read password
+
+    tcsetattr(STDIN_FILENO, TCSANOW, &oldt); // Restore old settings
+    std::cout << std::endl;                  // Print newline for clean output
+
+    return password;
 }

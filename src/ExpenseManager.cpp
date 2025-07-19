@@ -54,30 +54,38 @@ void ExpenseManager::showExpensesByCategory(const std::string &category) const
         std::cout << "No expenses found in category: " << category << "\n";
     }
 }
-void ExpenseManager::showMonthlySummary(const std::string& monthYear) const {
+void ExpenseManager::showMonthlySummary(const std::string &monthYear) const
+{
     double total = 0.0;
     bool found = false;
 
-    for (const auto& expense : expenses) {
+    for (const auto &expense : expenses)
+    {
         // Assuming date format is "YYYY-MM-DD"
-        if (expense.getDate().substr(0, 7) == monthYear) {
+        if (expense.getDate().substr(0, 7) == monthYear)
+        {
             expense.display();
             total += expense.getAmount();
             found = true;
         }
     }
 
-    if (found) {
+    if (found)
+    {
         std::cout << "Total Spent in " << monthYear << ": $" << total << "\n";
-    } else {
+    }
+    else
+    {
         std::cout << "No expenses found for " << monthYear << "\n";
     }
 }
-void ExpenseManager::exportMonthlyReport(const std::string& monthYear) const {
+void ExpenseManager::exportMonthlyReport(const std::string &monthYear) const
+{
     std::string filename = "reports/report-" + monthYear + ".txt";
 
     std::ofstream outFile(filename);
-    if (!outFile) {
+    if (!outFile)
+    {
         std::cerr << "Failed to create report file.\n";
         return;
     }
@@ -87,8 +95,10 @@ void ExpenseManager::exportMonthlyReport(const std::string& monthYear) const {
 
     outFile << "Monthly Expense Report for " << monthYear << "\n\n";
 
-    for (const auto& expense : expenses) {
-        if (expense.getDate().substr(0, 7) == monthYear) {
+    for (const auto &expense : expenses)
+    {
+        if (expense.getDate().substr(0, 7) == monthYear)
+        {
             outFile << "Date: " << expense.getDate()
                     << " | Amount: $" << expense.getAmount()
                     << " | Category: " << expense.getCategory()
@@ -99,16 +109,51 @@ void ExpenseManager::exportMonthlyReport(const std::string& monthYear) const {
         }
     }
 
-    if (found) {
+    if (found)
+    {
         outFile << "\nTotal Spent: $" << total << "\n";
         std::cout << "Report exported to " << filename << "\n";
-    } else {
+    }
+    else
+    {
         std::cout << "No expenses found for " << monthYear << ". Empty report created.\n";
         outFile << "No expenses found.\n";
     }
 
     outFile.close();
 }
-void ExpenseManager::setExpenses(const std::vector<Expense>& newExpenses) {
+void ExpenseManager::setExpenses(const std::vector<Expense> &newExpenses)
+{
     expenses = newExpenses;
+}
+void ExpenseManager::setMonthlyBudgetThreshold(double threshold)
+{
+    monthlyBudgetThreshold = threshold;
+}
+
+double ExpenseManager::getMonthlyBudgetThreshold() const
+{
+    return monthlyBudgetThreshold;
+}
+
+void ExpenseManager::checkBudgetWarning(const std::string &monthYear) const
+{
+    if (monthlyBudgetThreshold <= 0.0)
+        return;
+
+    double total = 0.0;
+    for (const auto &expense : expenses)
+    {
+        if (expense.getDate().substr(0, 7) == monthYear)
+        {
+            total += expense.getAmount();
+        }
+    }
+
+    if (total > monthlyBudgetThreshold)
+    {
+        std::cout << "WARNING: Total spending in " << monthYear
+                  << " is $" << total << ", which exceeds your budget of $"
+                  << monthlyBudgetThreshold << "!\n";
+    }
 }

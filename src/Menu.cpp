@@ -38,7 +38,7 @@ void Menu::show()
             manager.showAllExpenses();
             break;
         case 3:
-            showReportsMenu(); 
+            showReportsMenu();
             break;
         case 4:
             FileHandler::saveToFile("data/expenses.csv", manager.getExpenses());
@@ -63,6 +63,7 @@ void Menu::showReportsMenu()
         std::cout << "3. Show Monthly Summary\n";
         std::cout << "4. Export Monthly Report\n";
         std::cout << "5. Back to Main Menu\n";
+        std::cout << "6. Set Monthly Budget Threshold\n";
         std::cout << "Enter choice: ";
         std::cin >> reportChoice;
 
@@ -94,6 +95,7 @@ void Menu::showReportsMenu()
             std::cout << "Enter month and year (YYYY-MM): ";
             std::getline(std::cin, monthYear);
             manager.showMonthlySummary(monthYear);
+            manager.checkBudgetWarning(monthYear); 
             break;
         }
         case 4:
@@ -108,13 +110,21 @@ void Menu::showReportsMenu()
         case 5:
             std::cout << "Returning to main menu...\n";
             break;
+        case 6:
+        {
+            double threshold;
+            std::cout << "Enter monthly budget threshold: $";
+            std::cin >> threshold;
+            manager.setMonthlyBudgetThreshold(threshold);
+            std::cout << "Budget threshold set to $" << threshold << "\n";
+            break;
+        }
         default:
             std::cout << "Invalid choice. Try again.\n";
         }
 
     } while (reportChoice != 5);
 }
-
 
 Expense Menu::getExpenseFromUser() const
 {

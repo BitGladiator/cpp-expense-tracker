@@ -3,21 +3,29 @@
 #include "../include/Menu.h"
 #include "../include/PasswordManager.h"
 #include <iostream>
+#include <fstream> // for checking if file exists
 
 int main() {
-    // 🔐 Password check before anything else
-    PasswordManager::setPassword("data/password.txt");
-    if (!PasswordManager::verifyPassword("data/password.txt")) {
-        std::cout << "Access denied. Exiting.\n";
-        return 1;
+    std::string passwordFile = "password.txt";
+
+    //  If password file doesn't exist, set it once
+    std::ifstream infile(passwordFile);
+    if (!infile.good()) {
+        std::cout << "No password set. Let's set one up.\n";
+        PasswordManager::setPassword(passwordFile);
+    } else {
+        if (!PasswordManager::verifyPassword(passwordFile)) {
+            std::cout << "Access denied. Exiting.\n";
+            return 1;
+        }
     }
 
     ExpenseManager manager;
 
-    // ✅ Load existing expenses
+    // Load existing expenses
     manager.setExpenses(FileHandler::loadFromFile("data/expenses.csv"));
 
-    // 📋 Start main menu
+    // Start main menu
     Menu menu(manager);
     menu.show();
 
