@@ -10,6 +10,8 @@ private:
 
     Expense getExpenseFromUser() const;
     void showReportsMenu();
+    void editExpense();
+    void deleteExpense();
 
 public:
     Menu(ExpenseManager& mgr);

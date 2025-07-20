@@ -8,7 +8,8 @@ class ExpenseManager
 {
 private:
     std::vector<Expense> expenses;
-    double monthlyBudgetThreshold = 0.0; 
+    double monthlyBudgetThreshold = 0.0;
+    bool hasUnsavedChanges = false; 
 
 public:
     // Add a new expense to the list
@@ -17,6 +18,9 @@ public:
     // Display all saved expenses
     void showAllExpenses() const;
     double getTotalSpent() const;
+    bool isModified() const;
+    void markSaved();
+    void markModified();
     void setMonthlyBudgetThreshold(double threshold);
     double getMonthlyBudgetThreshold() const;
     void checkBudgetWarning(const std::string& monthYear) const;
@@ -24,6 +28,8 @@ public:
     void showExpensesByCategory(const std::string& category) const;
     void exportMonthlyReport(const std::string& monthYear) const;
     void showMonthlySummary(const std::string& monthYear) const;
+    void editExpense(size_t index, const Expense& updated);
+    void deleteExpense(size_t index);
     // Provide access to all expenses (useful for saving)
     std::vector<Expense> &getExpenses();
 };

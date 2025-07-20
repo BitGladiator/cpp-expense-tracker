@@ -2,11 +2,7 @@
 #include <iostream>
 #include <fstream>
 #include <filesystem> // C++17
-void ExpenseManager::addExpense(const Expense &e)
-{
-    expenses.push_back(e);
-    std::cout << "Expense added successfully.\n";
-}
+
 
 void ExpenseManager::showAllExpenses() const
 {
@@ -36,6 +32,7 @@ double ExpenseManager::getTotalSpent() const
     }
     return total;
 }
+
 void ExpenseManager::showExpensesByCategory(const std::string &category) const
 {
     bool found = false;
@@ -155,5 +152,33 @@ void ExpenseManager::checkBudgetWarning(const std::string &monthYear) const
         std::cout << "WARNING: Total spending in " << monthYear
                   << " is $" << total << ", which exceeds your budget of $"
                   << monthlyBudgetThreshold << "!\n";
+    }
+}
+bool ExpenseManager::isModified() const {
+    return hasUnsavedChanges;
+}
+
+void ExpenseManager::markSaved() {
+    hasUnsavedChanges = false;
+}
+void ExpenseManager::markModified() {
+    hasUnsavedChanges = true;
+}
+
+// Modify addExpense() like this:
+void ExpenseManager::addExpense(const Expense& expense) {
+    expenses.push_back(expense);
+    hasUnsavedChanges = true;
+}
+void ExpenseManager::editExpense(size_t index, const Expense& updated) {
+    if (index < expenses.size()) {
+        expenses[index] = updated;
+        markModified();  
+    }
+}
+
+void ExpenseManager::deleteExpense(size_t index) {
+    if (index < expenses.size()) {
+        expenses.erase(expenses.begin() + index);
     }
 }
