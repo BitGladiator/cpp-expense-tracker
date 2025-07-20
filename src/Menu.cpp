@@ -16,7 +16,8 @@ void Menu::show()
         std::cout << "2. Show All Expenses\n";
         std::cout << "3. Reports and Analytics\n";
         std::cout << "4. Edit Expense\n";
-        std::cout << "5. Save and Exit\n";
+        std::cout << "5. Delete Expense\n";
+        std::cout << "6. Save and Exit\n";
         std::cout << "Enter choice: ";
         std::cin >> choice;
 
@@ -45,6 +46,9 @@ void Menu::show()
             editExpense();
             break;
         case 5:
+            deleteExpense(); 
+            break;
+        case 6:
             if (manager.isModified())
             {
                 char saveChoice;
@@ -67,7 +71,7 @@ void Menu::show()
             std::cout << "Invalid choice. Try again.\n";
         }
 
-    } while (choice != 5);
+    } while (choice != 6);
 }
 
 void Menu::showReportsMenu()
@@ -191,4 +195,28 @@ void Menu::editExpense()
     Expense updated = getExpenseFromUser();
     manager.editExpense(index - 1, updated); // subtract 1 for 0-based indexing
     std::cout << "Expense updated.\n";
+}
+
+void Menu::deleteExpense()
+{
+    const auto &expenses = manager.getExpenses();
+    if (expenses.empty())
+    {
+        std::cout << "No expenses to delete.\n";
+        return;
+    }
+
+    manager.showAllExpenses();
+    std::cout << "Enter index of expense to delete (starting from 1): ";
+    size_t index;
+    std::cin >> index;
+
+    if (index < 1 || index > expenses.size())
+    {
+        std::cout << "Invalid index.\n";
+        return;
+    }
+
+    manager.deleteExpense(index - 1); // subtract 1 for 0-based indexing
+    std::cout << "Expense deleted.\n";
 }

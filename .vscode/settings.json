@@ -1,5 +1,7 @@
 {
     "files.associations": {
-        "filesystem": "cpp"
+        "*.dbclient-js": "javascript",
+        "filesystem": "cpp",
+        "vector": "cpp"
     }
 }

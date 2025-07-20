@@ -180,5 +180,6 @@ void ExpenseManager::editExpense(size_t index, const Expense& updated) {
 void ExpenseManager::deleteExpense(size_t index) {
     if (index < expenses.size()) {
         expenses.erase(expenses.begin() + index);
+        markModified();  
     }
 }
