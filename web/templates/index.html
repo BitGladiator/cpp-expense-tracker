@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Expense Tracker</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body {
+            background-color: #f8f9fa;
+        }
+        .container {
+            max-width: 800px;
+            margin-top: 50px;
+        }
+        .form-card {
+            background-color: #fff;
+            padding: 25px;
+            border-radius: 12px;
+            box-shadow: 0 2px 12px rgba(0,0,0,0.05);
+        }
+        h1 {
+            font-size: 2rem;
+            margin-bottom: 30px;
+        }
+        .table th, .table td {
+            vertical-align: middle;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h1 class="text-center">💸 Expense Tracker</h1>
+
+    <!-- Add Expense Form -->
+    <div class="form-card mb-4">
+        <form method="POST" action="/add">
+            <div class="row g-3">
+                <div class="col-md-4">
+                    <label for="amount" class="form-label">Amount</label>
+                    <input type="number" step="0.01" class="form-control" id="amount" name="amount" required>
+                </div>
+                <div class="col-md-4">
+                    <label for="category" class="form-label">Category</label>
+                    <input type="text" class="form-control" id="category" name="category" required>
+                </div>
+                <div class="col-md-4">
+                    <label for="date" class="form-label">Date</label>
+                    <input type="date" class="form-control" id="date" name="date" required>
+                </div>
+                <div class="col-12">
+                    <label for="note" class="form-label">Note</label>
+                    <input type="text" class="form-control" id="note" name="note" placeholder="Optional">
+                </div>
+            </div>
+            <div class="d-grid mt-4">
+                <button type="submit" class="btn btn-primary">Add Expense</button>
+            </div>
+        </form>
+    </div>
+
+    <!-- Expense Table -->
+    {% if expenses %}
+    <div class="table-responsive">
+        <table class="table table-bordered table-hover">
+            <thead class="table-dark">
+                <tr>
+                    <th>Amount (₹)</th>
+                    <th>Category</th>
+                    <th>Date</th>
+                    <th>Note</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for expense in expenses %}
+                <tr>
+                    <td>{{ expense.amount }}</td>
+                    <td>{{ expense.category }}</td>
+                    <td>{{ expense.date }}</td>
+                    <td>{{ expense.note }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    {% else %}
+        <p class="text-center text-muted">No expenses recorded yet.</p>
+    {% endif %}
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

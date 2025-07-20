@@ -3,5 +3,6 @@
         "*.dbclient-js": "javascript",
         "filesystem": "cpp",
         "vector": "cpp"
-    }
+    },
+    "python.defaultInterpreterPath": "venv/bin/python3"
 }
