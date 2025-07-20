@@ -183,3 +183,24 @@ void ExpenseManager::deleteExpense(size_t index) {
         markModified();  
     }
 }
+void ExpenseManager::searchExpenses(const std::string &query) const {
+    bool found = false;
+
+    std::cout << "\n--- Search Results for \"" << query << "\" ---\n";
+
+    for (const auto &expense : expenses)
+    {
+        if (expense.getCategory().find(query) != std::string::npos ||
+            expense.getNote().find(query) != std::string::npos ||
+            expense.getDate().find(query) != std::string::npos)
+        {
+            expense.display();
+            found = true;
+        }
+    }
+
+    if (!found)
+    {
+        std::cout << "No matching expenses found.\n";
+    }
+}

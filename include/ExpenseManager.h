@@ -30,6 +30,7 @@ public:
     void showMonthlySummary(const std::string& monthYear) const;
     void editExpense(size_t index, const Expense& updated);
     void deleteExpense(size_t index);
+    void searchExpenses(const std::string &query) const;
     // Provide access to all expenses (useful for saving)
     std::vector<Expense> &getExpenses();
 };

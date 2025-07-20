@@ -17,7 +17,9 @@ void Menu::show()
         std::cout << "3. Reports and Analytics\n";
         std::cout << "4. Edit Expense\n";
         std::cout << "5. Delete Expense\n";
-        std::cout << "6. Save and Exit\n";
+        std::cout << "6. Save\n";
+        std::cout << "7. Search Expense\n";
+        std::cout << "8. Exit\n";
         std::cout << "Enter choice: ";
         std::cin >> choice;
 
@@ -46,9 +48,23 @@ void Menu::show()
             editExpense();
             break;
         case 5:
-            deleteExpense(); 
+            deleteExpense();
             break;
         case 6:
+            FileHandler::saveToFile("data/expenses.csv", manager.getExpenses());
+            manager.markSaved();
+            std::cout << "Changes saved.\n";
+            break;
+        case 7:
+        {
+            std::cin.ignore();
+            std::string query;
+            std::cout << "Enter search query (category, note, or date): ";
+            std::getline(std::cin, query);
+            manager.searchExpenses(query);
+            break;
+        }
+        case 8:
             if (manager.isModified())
             {
                 char saveChoice;
@@ -71,7 +87,7 @@ void Menu::show()
             std::cout << "Invalid choice. Try again.\n";
         }
 
-    } while (choice != 6);
+    } while (choice != 8);
 }
 
 void Menu::showReportsMenu()
