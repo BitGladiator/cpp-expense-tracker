@@ -12,9 +12,7 @@ DATA_FILE = os.path.join(DATA_DIR, 'expenses.csv')
 # Ensure data directory exists
 os.makedirs(DATA_DIR, exist_ok=True)
 
-# ------------------------------
-# Load expenses from CSV
-# ------------------------------
+
 def load_expenses():
     expenses = []
     if os.path.exists(DATA_FILE):
@@ -32,18 +30,13 @@ def load_expenses():
                     })
     return expenses
 
-# ------------------------------
-# Save all expenses to CSV
-# ------------------------------
+
 def save_all_expenses(expenses):
     with open(DATA_FILE, mode='w', newline='') as f:
         writer = csv.writer(f)
         for expense in expenses:
             writer.writerow([expense['amount'], expense['category'], expense['date'], expense['note']])
 
-# ------------------------------
-# Save single expense to CSV (append)
-# ------------------------------
 def save_expense(expense):
     with open(DATA_FILE, mode='a', newline='') as f:
         writer = csv.writer(f)
