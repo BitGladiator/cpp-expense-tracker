@@ -9,15 +9,22 @@ BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 DATA_DIR = os.path.join(BASE_DIR, '..', 'data')
 DATA_FILE = os.path.join(DATA_DIR, 'expenses.csv')
 
+# Ensure data directory exists
+os.makedirs(DATA_DIR, exist_ok=True)
+
+# ------------------------------
+# Load expenses from CSV
+# ------------------------------
 def load_expenses():
     expenses = []
     if os.path.exists(DATA_FILE):
-        with open(DATA_FILE, newline='', encoding='utf-8') as f:
+        with open(DATA_FILE, newline='') as f:
             reader = csv.reader(f)
-            for row in reader:
+            for idx, row in enumerate(reader):
                 if len(row) == 4:
                     amount, category, date, note = row
                     expenses.append({
+                        'id': idx,
                         'amount': amount,
                         'category': category,
                         'date': date,
@@ -25,11 +32,20 @@ def load_expenses():
                     })
     return expenses
 
-def save_expense(expense):
-    # Ensure the ../data directory exists
-    os.makedirs(DATA_DIR, exist_ok=True)
+# ------------------------------
+# Save all expenses to CSV
+# ------------------------------
+def save_all_expenses(expenses):
+    with open(DATA_FILE, mode='w', newline='') as f:
+        writer = csv.writer(f)
+        for expense in expenses:
+            writer.writerow([expense['amount'], expense['category'], expense['date'], expense['note']])
 
-    with open(DATA_FILE, mode='a', newline='', encoding='utf-8') as f:
+# ------------------------------
+# Save single expense to CSV (append)
+# ------------------------------
+def save_expense(expense):
+    with open(DATA_FILE, mode='a', newline='') as f:
         writer = csv.writer(f)
         writer.writerow([expense['amount'], expense['category'], expense['date'], expense['note']])
 
@@ -49,5 +65,29 @@ def add_expense():
     save_expense(expense)
     return redirect('/')
 
-if __name__ == '__main__':
-    app.run(debug=True)
+@app.route('/delete/<int:expense_id>', methods=['POST'])
+def delete_expense(expense_id):
+    expenses = load_expenses()
+    if 0 <= expense_id < len(expenses):
+        del expenses[expense_id]
+        save_all_expenses(expenses)
+    return redirect('/')
+
+@app.route('/edit/<int:expense_id>', methods=['GET', 'POST'])
+def edit_expense(expense_id):
+    expenses = load_expenses()
+    if request.method == 'POST':
+        if 0 <= expense_id < len(expenses):
+            expenses[expense_id] = {
+                'amount': request.form['amount'],
+                'category': request.form['category'],
+                'date': request.form['date'],
+                'note': request.form['note']
+            }
+            save_all_expenses(expenses)
+            return redirect('/')
+    else:
+        if 0 <= expense_id < len(expenses):
+            expense = expenses[expense_id]
+            return render_template('edit.html', expense=expense)
+    return redirect('/')
