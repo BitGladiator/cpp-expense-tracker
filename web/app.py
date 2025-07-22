@@ -20,12 +20,12 @@ def load_expenses():
             reader = csv.reader(f)
             for idx, row in enumerate(reader):
                 if len(row) == 4:
-                    amount, category, date, note = row
+                    date,amount,category, note = row
                     expenses.append({
                         'id': idx,
+                        'date': date,
                         'amount': amount,
                         'category': category,
-                        'date': date,
                         'note': note
                     })
     return expenses
@@ -35,12 +35,12 @@ def save_all_expenses(expenses):
     with open(DATA_FILE, mode='w', newline='') as f:
         writer = csv.writer(f)
         for expense in expenses:
-            writer.writerow([expense['amount'], expense['category'], expense['date'], expense['note']])
+            writer.writerow([expense['date'],expense['amount'], expense['category'],expense['note']])
 
 def save_expense(expense):
     with open(DATA_FILE, mode='a', newline='') as f:
         writer = csv.writer(f)
-        writer.writerow([expense['amount'], expense['category'], expense['date'], expense['note']])
+        writer.writerow([expense['date'],expense['amount'], expense['category'], expense['note']])
 
 @app.route('/')
 def index():
@@ -50,9 +50,9 @@ def index():
 @app.route('/add', methods=['POST'])
 def add_expense():
     expense = {
+        'date': request.form['date'],
         'amount': request.form['amount'],
         'category': request.form['category'],
-        'date': request.form['date'],
         'note': request.form['note']
     }
     save_expense(expense)
@@ -72,9 +72,9 @@ def edit_expense(expense_id):
     if request.method == 'POST':
         if 0 <= expense_id < len(expenses):
             expenses[expense_id] = {
+                'date': request.form['date'],
                 'amount': request.form['amount'],
                 'category': request.form['category'],
-                'date': request.form['date'],
                 'note': request.form['note']
             }
             save_all_expenses(expenses)

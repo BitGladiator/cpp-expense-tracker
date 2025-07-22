@@ -3,35 +3,41 @@
 
 #include <string>
 
-// The Expense class represents a single financial expense with details.
+// Represents a single financial expense
 class Expense
 {
 private:
-    double amount;        // The amount of the expense
-    std::string category; // The category of the expense (e.g., Food, Travel)
-    std::string date;     // The date of the expense (e.g., "2025-07-09")
-    std::string note;     // Optional note/description for the expense
+    double amount;        // Expense amount
+    std::string category; // Expense category (e.g., Food, Travel)
+    std::string date;     // Date of expense (e.g., "2025-07-09")
+    std::string note;     // Optional note or description
 
 public:
     // Default constructor
     Expense();
 
-    // Parameterized constructor to initialize an expense
+    // Constructor with all fields
     Expense(double amt, const std::string &cat, const std::string &dt, const std::string &nt);
 
-    // Getters for each member variable
+    // Get amount
     double getAmount() const;
+
+    // Get category
     std::string getCategory() const;
+
+    // Get date
     std::string getDate() const;
+
+    // Get note
     std::string getNote() const;
 
-    // Display the expense details to the console
+    // Print expense details
     void display() const;
 
-    // Convert expense to a CSV-formatted string (for saving to file)
+    // Convert to CSV string
     std::string toCSV() const;
 
-    // Static method to create an Expense object from a CSV line (for loading from file)
+    // Create from CSV string
     static Expense fromCSV(const std::string &line);
 };
 
