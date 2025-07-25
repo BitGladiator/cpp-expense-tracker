@@ -60,7 +60,18 @@ Expense Tracker/
 - Flask routing for expense operations
 
 ---
+## 📸 Screenshots
 
+###  Home Page
+![Home Page](web/static/screenshots/screenshot1.png)
+
+###  Edit Expense Form
+![Edit Expense](web/static/screenshots/screenshot2.png)
+
+###  CLI Interface
+![CLI Interface](web/static/screenshots/screenshot3.png)
+
+---
 ## ⚙️ Build & Run
 
 ### 🔧 C++ (CLI)
