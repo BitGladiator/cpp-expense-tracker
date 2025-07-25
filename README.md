@@ -63,13 +63,13 @@ Expense Tracker/
 ## 📸 Screenshots
 
 ###  Home Page
-![Home Page](web/static/screenshots/screenshot1.png)
+![Home Page](web/static/screenshots/Screenshot1.png)
 
 ###  Edit Expense Form
-![Edit Expense](web/static/screenshots/screenshot2.png)
+![Edit Expense](web/static/screenshots/Screenshot2.png)
 
 ###  CLI Interface
-![CLI Interface](web/static/screenshots/screenshot3.png)
+![CLI Interface](web/static/screenshots/Screenshot3.png)
 
 ---
 ## ⚙️ Build & Run
