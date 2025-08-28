@@ -1,0 +1,20 @@
+# Force ARM64 at build stage
+FROM --platform=linux/arm64 ubuntu:22.04 as builder
+
+RUN apt-get update && apt-get install -y \
+    g++ make \
+    && rm -rf /var/lib/apt/lists/*
+
+WORKDIR /app
+COPY . .
+
+RUN make
+
+# Runtime stage (also ARM64)
+FROM --platform=linux/arm64 ubuntu:22.04
+WORKDIR /app
+
+COPY --from=builder /app/build/expense_tracker .
+COPY data ./data
+
+CMD ["./expense_tracker"]

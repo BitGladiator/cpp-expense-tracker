@@ -1,0 +1,22 @@
+version: "3.9"
+
+services:
+  cli:
+    platform: linux/arm64   
+    build:
+      context: .
+      dockerfile: Dockerfile.cli
+    volumes:
+      - ./data:/app/data
+    stdin_open: true
+    tty: true
+
+  web:
+    platform: linux/arm64 
+    build:
+      context: .
+      dockerfile: Dockerfile.web
+    volumes:
+      - ./data:/app/data
+    ports:
+      - "5001:5000"        
