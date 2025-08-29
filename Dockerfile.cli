@@ -1,6 +1,7 @@
-# Force ARM64 at build stage
-FROM --platform=linux/arm64 ubuntu:22.04 as builder
+# Multi-architecture build - let Docker choose the appropriate platform
+FROM ubuntu:22.04 as builder
 
+# Install build dependencies
 RUN apt-get update && apt-get install -y \
     g++ make \
     && rm -rf /var/lib/apt/lists/*
@@ -8,13 +9,18 @@ RUN apt-get update && apt-get install -y \
 WORKDIR /app
 COPY . .
 
+# Build the application
 RUN make
 
-# Runtime stage (also ARM64)
-FROM --platform=linux/arm64 ubuntu:22.04
+# Runtime stage
+FROM ubuntu:22.04
 WORKDIR /app
 
+# Copy the built binary
 COPY --from=builder /app/build/expense_tracker .
 COPY data ./data
+
+# Ensure the binary is executable
+RUN chmod +x ./expense_tracker
 
 CMD ["./expense_tracker"]

@@ -91,3 +91,19 @@ def edit_expense(expense_id):
             expense = expenses[expense_id]
             return render_template('edit.html', expense=expense)
     return redirect('/')
+if __name__ == '__main__':
+    print("Starting Expense Tracker Web Interface...")
+    print(f"Data directory: {DATA_DIR}")
+    print(f"CSV file: {DATA_FILE}")
+    print("Access your expenses at: http://localhost:5000")
+    
+    # Ensure data directory exists
+    os.makedirs(DATA_DIR, exist_ok=True)
+    
+    # Run Flask app
+    try:
+        app.run(host='0.0.0.0', port=5000, debug=False, use_reloader=False)
+    except Exception as e:
+        print(f"Error starting Flask app: {e}")
+        import traceback
+        traceback.print_exc()

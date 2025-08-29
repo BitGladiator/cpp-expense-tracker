@@ -1,14 +1,28 @@
-# Dockerfile.web
+# Use Python 3.10 slim image (no platform restriction)
 FROM python:3.10-slim
 
+# Set working directory
 WORKDIR /app
 
-# Copy Flask app & requirements
-COPY web ./web
-COPY data ./data
+# Copy requirements first (for better layer caching)
 COPY requirements.txt .
 
+# Install Python dependencies
 RUN pip install --no-cache-dir -r requirements.txt
 
+# Copy Flask app and data directory
+COPY web ./web
+COPY data ./data
+
+# Create data directory if it doesn't exist
+RUN mkdir -p ./data
+
+# Expose port 5000
 EXPOSE 5000
+
+# Set environment variables for Flask
+ENV FLASK_ENV=production
+ENV PYTHONUNBUFFERED=1
+
+# Run the Flask application
 CMD ["python", "web/app.py"]

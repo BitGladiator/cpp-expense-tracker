@@ -9,7 +9,7 @@ public:
     static void setPassword(const std::string& filePath);
 private:
     static std::string getMaskedPassword(); 
-};
+};\
 
 
 #endif 
